@@ -15,7 +15,7 @@
   function createLink() { 
     var url = document.getElementById("url").value; 
     var link = document.createElement("a"); 
-    var text = document.createTextNode(url); 
+    var text = document.createTextNode("alpha-u-wallet://" + url); 
     link.appendChild(text); 
     link.href = "alpha-u-wallet://" + url; 
     document.getElementById("result").innerHTML = "Generated Link: "; 
