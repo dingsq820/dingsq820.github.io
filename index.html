@@ -5,3 +5,22 @@
   <li> <a href="./mnemonicList/mnemonicList.html">助记词一览</a> </li>
   <li> <a href="https://www.urlencoder.org/" target="_blank">URLEncoder</a> </li>
 </ul>
+
+<p>IOS WalletConnect DeepLink</p>
+<a href="alpha-u-wallet://wc:f6cdc81ee0ddd7d4ca95eb5aa1b0d6c26925be8559b89587be7b5e7d2df1f32a@2?relay-protocol=irn&symKey=68be53107486a90570c909751fd17818b740991db4c5a17449587e6a3d3778f8">xxx</a>
+
+<input type="text" id="url" placeholder="Enter URL">
+<button onclick="createLink()">Generate Link</button>
+<br><br> 
+<p id="result"></p> 
+<script> 
+  function createLink() { 
+    var url = document.getElementById("url").value; 
+    var link = document.createElement("a"); 
+    var text = document.createTextNode(url); 
+    link.appendChild(text); 
+    link.href = url; 
+    document.getElementById("result").innerHTML = "Generated Link: "; 
+    document.getElementById("result").appendChild(link); 
+  } 
+</script>
