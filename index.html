@@ -10,7 +10,7 @@
 <input type="text" id="url" placeholder="Enter URL" size="100">
 <button onclick="createLink()">Generate Link</button>
 <br><br> 
-<p id="result"></p> 
+<p id="result">Generated Link: </p> 
 <script> 
   function createLink() { 
     var url = document.getElementById("url").value; 
@@ -18,7 +18,8 @@
     var text = document.createTextNode(encodeURI("alpha-u-wallet://wc?uri=" + url)); 
     link.appendChild(text); 
     link.href = encodeURI("alpha-u-wallet://wc?uri=" + url); 
-    document.getElementById("result").innerHTML = "Generated Link: "; 
+    // document.getElementById("result").innerHTML = "Generated Link: "; 
+    document.getElementById("result").appendChild("<br>"); 
     document.getElementById("result").appendChild(link); 
   } 
 </script>
