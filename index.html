@@ -19,7 +19,8 @@
     link.appendChild(text); 
     link.href = encodeURIComponent("alpha-u-wallet://wc?uri=" + url); 
     // document.getElementById("result").innerHTML = "Generated Link: "; 
-    document.getElementById("result").appendChild("<br>"); 
+    var br = document.createElement("br");
+    document.getElementById("result").appendChild(br); 
     document.getElementById("result").appendChild(link); 
   } 
 </script>
