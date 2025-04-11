@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>层级下拉选择框</title>
+    <style>
+        .container {
+            position: relative;
+            display: inline-block;
+            width: 300px;
+        }
+        
+        #textInput {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+        
+        .dropdown.show {
+            display: block;
+        }
+        
+        .sub-dropdown {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 2;
+            top: 0;
+            left: 100%;
+        }
+        
+        .sub-dropdown.show {
+            display: block;
+        }
+        
+        .dropdown-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dropdown-option:hover {
+            background-color: #ddd;
+        }
+        
+        .has-children::after {
+            content: ">";
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="textInput" placeholder="请选择" readonly>
+        <div class="dropdown" id="mainDropdown">
+            <!-- 主选项将通过JavaScript动态添加 -->
+        </div>
+    </div>
+
+    <script>
+        // 模拟数据 - 可以替换为你的实际数据
+        const optionsData = [
+            {
+                value: "option1",
+                label: "选项1",
+                children: [
+                    {
+                        value: "option1-1",
+                        label: "选项1-1",
+                        children: [
+                            { value: "option1-1-1", label: "选项1-1-1" },
+                            { value: "option1-1-2", label: "选项1-1-2" }
+                        ]
+                    },
+                    { value: "option1-2", label: "选项1-2" }
+                ]
+            },
+            {
+                value: "option2",
+                label: "选项2",
+                children: [
+                    { value: "option2-1", label: "选项2-1" },
+                    { value: "option2-2", label: "选项2-2" }
+                ]
+            },
+            {
+                value: "option3",
+                label: "选项3"
+            }
+        ];
+
+        const textInput = document.getElementById('textInput');
+        const mainDropdown = document.getElementById('mainDropdown');
+        let currentDropdown = null;
+        let selectedPath = [];
+
+        // 初始化主下拉框
+        function initDropdown() {
+            mainDropdown.innerHTML = '';
+            optionsData.forEach(option => {
+                const optionElement = createOptionElement(option);
+                mainDropdown.appendChild(optionElement);
+            });
+        }
+
+        // 创建选项元素
+        function createOptionElement(option, parentElement = null) {
+            const optionElement = document.createElement('div');
+            optionElement.className = 'dropdown-option';
+            if (option.children) {
+                optionElement.classList.add('has-children');
+            }
+            optionElement.textContent = option.label;
+            optionElement.dataset.value = option.value;
+            optionElement.dataset.label = option.label;
+            
+            optionElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                
+                if (option.children) {
+                    // 如果有子选项，显示子下拉框
+                    showSubDropdown(option, optionElement);
+                } else {
+                    // 如果没有子选项，选择完成
+                    selectOption(option, parentElement);
+                }
+            });
+            
+            return optionElement;
+        }
+
+        // 显示子下拉框
+        function showSubDropdown(option, parentElement) {
+            // 移除现有的子下拉框
+            const existingSubDropdown = document.querySelector('.sub-dropdown.show');
+            if (existingSubDropdown) {
+                existingSubDropdown.remove();
+            }
+            
+            // 创建新的子下拉框
+            const subDropdown = document.createElement('div');
+            subDropdown.className = 'sub-dropdown';
+            
+            option.children.forEach(childOption => {
+                const optionElement = createOptionElement(childOption, parentElement);
+                subDropdown.appendChild(optionElement);
+            });
+            
+            // 定位子下拉框
+            parentElement.appendChild(subDropdown);
+          
